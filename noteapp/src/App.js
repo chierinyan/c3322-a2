@@ -2,16 +2,19 @@ import React from 'react';
 import $ from 'jquery';
 
 import Signin from './components/Signin';
+import Nav from './components/Nav';
 
 const EXPRESS_URL = 'http://localhost:3001/';
 
+const init = {
+    name: null,
+    icon: null,
+    notes: []
+};
+
 
 class App extends React.Component {
-    state = {
-        name: null,
-        icon: null,
-        notes: []
-    };
+    state = init;
 
     signin = (credentials) => {
         $.post(EXPRESS_URL + 'signin', credentials, (res) => {
@@ -27,9 +30,21 @@ class App extends React.Component {
         });
     }
 
+    logout = () => {
+        $.get(EXPRESS_URL + 'logout');
+        this.setState({...init});
+    }
+
     render() {
         if (this.state.name === null) {
             return <Signin signin={this.signin}/>;
+        } else {
+            const {name, icon} = this.state;
+            return (
+                <React.Fragment>
+                    <Nav name={name} icon={icon} logout={this.logout}/>
+                </React.Fragment>
+            );
         }
     }
 }

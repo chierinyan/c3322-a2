@@ -28,4 +28,9 @@ router.post('/signin', async (req, res) => {
     }
 });
 
+router.get('/logout', (req, res) => {
+    req.session['userId'] = null;
+    res.send('');
+});
+
 module.exports = router;
