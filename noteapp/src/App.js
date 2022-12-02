@@ -4,6 +4,7 @@ import $ from 'jquery';
 import Signin from './components/Signin';
 import Nav from './components/Nav';
 import Notes from './components/Notes';
+import Main from './components/Main';
 
 const EXPRESS_URL = 'http://localhost:3001/';
 
@@ -17,6 +18,7 @@ const init = {
 
 class App extends React.Component {
     state = init;
+    main = React.createRef();
 
     set_notes = (notes) => {
         function comp_note(a, b) {
@@ -50,17 +52,21 @@ class App extends React.Component {
 
     select = (noteid) => {
         this.setState({selected: noteid});
+        $.getJSON(EXPRESS_URL + 'getnote', {noteid: noteid}, (res) => {
+            this.main.current.set_note(res);
+        });
     }
 
     render() {
         if (this.state.name === null) {
             return <Signin signin={this.signin}/>;
         } else {
-            const {name, icon, notes, selected} = this.state;
+            const {name, icon, notes, selected, editing} = this.state;
             return (
                 <React.Fragment>
                     <Nav name={name} icon={icon} logout={this.logout}/>
                     <Notes notes={notes} selected={selected} onClick={this.select}/>
+                    <Main ref={this.main} editing={editing}/>
                 </React.Fragment>
             );
         }

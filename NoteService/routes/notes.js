@@ -1,3 +1,5 @@
+var monk = require('monk');
+
 var express = require('express');
 var router = express.Router();
 
@@ -31,6 +33,18 @@ router.post('/signin', async (req, res) => {
 router.get('/logout', (req, res) => {
     req.session['userId'] = null;
     res.send('');
+});
+
+router.get('/getnote', async (req, res) => {
+    try {
+        const {noteid} = req.query;
+        let note_doc = await req.note_list.findOne({_id: monk.id(noteid)});
+        delete note_doc['userId'];
+        res.json(note_doc);
+    } catch (err) {
+        console.error(err);
+        res.send(err);
+    }
 });
 
 module.exports = router;
