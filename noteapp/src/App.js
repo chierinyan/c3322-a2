@@ -5,6 +5,7 @@ import Signin from './components/Signin';
 import Nav from './components/Nav';
 import Notes from './components/Notes';
 import Main from './components/Main';
+import Menu from './components/Menu';
 
 const EXPRESS_URL = 'http://localhost:3001/';
 
@@ -12,7 +13,9 @@ const init = {
     name: null,
     icon: null,
     notes: [],
-    selected: 'idle'
+    selected: 'idle',
+    time: null,
+    editing: false
 };
 
 
@@ -54,6 +57,7 @@ class App extends React.Component {
         this.setState({selected: noteid});
         $.getJSON(EXPRESS_URL + 'getnote', {noteid: noteid}, (res) => {
             this.main.current.set_note(res);
+            this.setState({time: res['lastsavedtime']});
         });
     }
 
@@ -61,11 +65,12 @@ class App extends React.Component {
         if (this.state.name === null) {
             return <Signin signin={this.signin}/>;
         } else {
-            const {name, icon, notes, selected, editing} = this.state;
+            const {name, icon, notes, selected, time, editing} = this.state;
             return (
                 <React.Fragment>
                     <Nav name={name} icon={icon} logout={this.logout}/>
                     <Notes notes={notes} selected={selected} onClick={this.select}/>
+                    <Menu time={time} editing={editing}/>
                     <Main ref={this.main} editing={editing}/>
                 </React.Fragment>
             );
