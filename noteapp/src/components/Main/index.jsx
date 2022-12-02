@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './index.css';
+
 class Main extends React.Component {
     state = {current_note: 'idle'};
 

@@ -1,10 +1,12 @@
 import React from 'react';
 
+import './index.css';
+
 function Menu(props) {
     const {time, editing} = props;
     if (editing) {
         return (
-            <div id='edit_menu'>
+            <div id='edit_menu' className='menu'>
                 <button>Cancel</button>
                 <button>Save</button>
             </div>
@@ -20,8 +22,8 @@ function Menu(props) {
             );
         }
         return (
-            <div id='view_menu'>
-                <button>New</button>
+            <div id='view_menu' className='menu'>
+                <button id='new'>New</button>
                 {note_opt}
             </div>
         );

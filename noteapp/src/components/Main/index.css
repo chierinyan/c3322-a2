@@ -1,0 +1,9 @@
+#main input, #main textarea {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+}
+
+#main.idle {
+    display: none;
+}

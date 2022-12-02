@@ -1,0 +1,16 @@
+div {
+    box-sizing: border-box;
+    width: fit-content;
+    overflow: hidden;
+    margin: 15px auto;
+}
+
+#main_container {
+    width: 720px;
+    display: grid;
+    grid-template-columns: 180px 90px 450px;
+}
+
+#main_container div {
+    width: 100%;
+}

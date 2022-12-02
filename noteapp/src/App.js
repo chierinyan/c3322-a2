@@ -7,6 +7,8 @@ import Notes from './components/Notes';
 import Main from './components/Main';
 import Menu from './components/Menu';
 
+import './App.css';
+
 const EXPRESS_URL = 'http://localhost:3001/';
 
 const init = {
@@ -69,9 +71,14 @@ class App extends React.Component {
             return (
                 <React.Fragment>
                     <Nav name={name} icon={icon} logout={this.logout}/>
-                    <Notes notes={notes} selected={selected} onClick={this.select}/>
-                    <Menu time={time} editing={editing}/>
-                    <Main ref={this.main} editing={editing}/>
+                    <div id='main_container'>
+                        <Notes notes={notes} selected={selected} onClick={this.select}/>
+                        <div/>
+                        <div>
+                            <Menu time={time} editing={editing}/>
+                            <Main ref={this.main} editing={editing}/>
+                        </div>
+                    </div>
                 </React.Fragment>
             );
         }
