@@ -62,12 +62,44 @@ class App extends React.Component {
         this.setState({...init});
     }
 
-    select = (noteid) => {
-        this.setState({selected: noteid});
-        $.getJSON(EXPRESS_URL + 'getnote', {noteid: noteid}, (res) => {
-            this.main.current.set_note(res);
-            this.setState({time: res['lastsavedtime']});
+    new_note = () => {
+        this.setState({
+            selected: 'new',
+            editing: true
         });
+        this.main.current.set_note({
+            _id: 'new',
+            title: 'New Note',
+            content: ''
+        })
+    }
+
+    save_note = () => {
+        const noteid = this.main.current.state['current_note'];
+        const title = this.main.current.title.current.value;
+        const content = this.main.current.content.current.value;
+        if (noteid === 'new') {
+            $.post(EXPRESS_URL + 'addnote', {note: {title: title, content: content}}, (res) => {
+                this.set_notes([res, ...this.state['notes']]);
+            });
+        }
+    }
+
+    select = (noteid) => {
+        if (this.state.editing && !window.confirm('Are you sure to quit editing the note?')) {
+            return;
+        }
+        this.setState({editing: false});
+        if (noteid === 'idle' || noteid === 'new') {
+            this.setState({selected: 'idle', time: null});
+            this.main.current.set_note({_id: 'idle', title: '', content: ''});
+        } else {
+            this.setState({selected: noteid});
+            $.getJSON(EXPRESS_URL + 'getnote', {noteid: noteid}, (res) => {
+                this.main.current.set_note(res);
+                this.setState({time: res['lastsavedtime']});
+            });
+        }
     }
 
     render() {
@@ -82,7 +114,8 @@ class App extends React.Component {
                         <Notes notes={notes} selected={selected} onClick={this.select}/>
                         <div/>
                         <div>
-                            <Menu time={time} editing={editing}/>
+                            <Menu time={time} editing={editing}
+                             newNote={this.new_note} saveNote={this.save_note} cancel={() => this.select(this.state.selected)}/>
                             <Main ref={this.main} editing={editing}/>
                         </div>
                     </div>
