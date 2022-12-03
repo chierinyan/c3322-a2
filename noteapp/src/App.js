@@ -22,8 +22,15 @@ const init = {
 
 
 class App extends React.Component {
-    state = init;
-    main = React.createRef();
+    constructor(props) {
+        super(props)
+        this.state = init;
+        this.main = React.createRef();
+        $.ajaxSetup({
+            xhrFields: {withCredentials: true},
+            crossDomain: true
+        });
+    }
 
     set_notes = (notes) => {
         function comp_note(a, b) {

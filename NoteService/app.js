@@ -10,7 +10,6 @@ var notesRouter = require('./routes/notes');
 
 var app = express();
 
-app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -21,6 +20,13 @@ app.use(session({
     resave: false,
     saveUninitialized:true
 }))
+
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}));
+
+app.options('*', cors());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
