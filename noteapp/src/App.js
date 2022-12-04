@@ -58,8 +58,10 @@ class App extends React.Component {
     }
 
     logout = () => {
-        $.get(EXPRESS_URL + 'logout');
-        this.setState({...init});
+        if (!this.state.editing || window.confirm('Are you sure to quit editing the note and log out?')) {
+            $.get(EXPRESS_URL + 'logout');
+            this.setState({...init});
+        }
     }
 
     new_note = () => {
