@@ -1,3 +1,29 @@
-.selected {
-    background-color: yellow;
+#notes {
+    text-align: left;
+}
+
+#notes h3 {
+    padding-left: 5px;
+    margin-bottom: 8px;
+}
+
+#notes > input {
+    width: 100%;
+}
+
+#notes .selected {
+    border-radius: 5px;
+    background-color: #AED6F1;
+}
+
+
+#notes ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+#notes li {
+    padding: 0.3em 0.5em;
+    margin-top: 0.5em;
+    cursor: grab;
 }

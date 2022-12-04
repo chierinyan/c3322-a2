@@ -11,8 +11,8 @@ class Main extends React.Component {
     render() {
         return (
             <div id='main' className={this.state['current_note']} onClick={this.props.startEditing}>
-                <input ref={this.title} disabled={! this.props['editing']}/>
-                <textarea ref={this.content} disabled={! this.props['editing']}/>
+                <input ref={this.title}/>
+                <textarea ref={this.content}/>
             </div>
         );
     }

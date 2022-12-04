@@ -12,11 +12,11 @@ function Menu(props) {
             </div>
         );
     } else {
-        let note_opt = null;
+        let note_opt = <div/>;
         if (time) {
             note_opt = (
                 <React.Fragment>
-                    <span>{time}</span>
+                    <span>Last edit:<br/>{time}</span>
                     <button onClick={deleteNote}>Delete</button>
                 </React.Fragment>
             );

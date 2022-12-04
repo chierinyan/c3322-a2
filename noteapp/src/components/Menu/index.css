@@ -1,7 +1,27 @@
 .menu {
+    margin: 0;
+}
+
+.menu span {
+    padding-top: 15px;
+    font-size: 14px;
+    display: block;
+    width: 100%;
+    height: fit-content;
+}
+
+
+#edit_menu {
     text-align: right;
 }
 
-#new {
-    float: left;
+#edit_menu button {
+    margin-left: 8px;
+}
+
+
+#view_menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }

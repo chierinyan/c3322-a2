@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './index.css';
+
 class Signin extends React.Component {
     state = { name: '', pwd: '' };
 
