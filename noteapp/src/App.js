@@ -97,6 +97,12 @@ class App extends React.Component {
         }
     }
 
+    search = (searchstr) => {
+        $.getJSON(EXPRESS_URL + 'searchnotes', {searchstr: searchstr}, (res) => {
+            this.set_notes(res['notes']);
+        });
+    }
+
     select = (noteid, force=false) => {
         if (this.state.editing && !(force || window.confirm('Are you sure to quit editing the note?'))) {
             return false;
@@ -123,7 +129,7 @@ class App extends React.Component {
                 <React.Fragment>
                     <Nav name={name} icon={icon} logout={this.logout}/>
                     <div id='main_container'>
-                        <Notes notes={notes} selected={selected} onClick={this.select}/>
+                        <Notes notes={notes} selected={selected} onClick={this.select} search={this.search}/>
                         <div/>
                         <div>
                             <Menu time={time} editing={editing}

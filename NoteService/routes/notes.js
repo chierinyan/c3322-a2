@@ -3,9 +3,19 @@ var monk = require('monk');
 var express = require('express');
 var router = express.Router();
 
-async function find_notes(req, userid){
-    console.log(userid);
-    const note_docs = await req.note_list.find({userId: userid});
+async function find_notes(req, userid, searchstr=null){
+    let note_docs = await req.note_list.find({userId: userid});
+    if (searchstr) {
+        let search_res = [];
+        for (let note_doc of note_docs) {
+            const {title, content} = note_doc;
+            console.log(title, searchstr, title.includes(searchstr));
+            if (title.includes(searchstr) || content.includes(searchstr)) {
+                search_res.push(note_doc);
+            }
+        }
+        note_docs = search_res;
+    }
     return note_docs.map(doc => {
         delete doc['userId'];
         delete doc['content'];
@@ -74,6 +84,16 @@ router.put('/savenote/:noteid', async (req, res) => {
         update_time(note);
         await req.note_list.update({_id: monk.id(req.params['noteid'])}, {$set: note});
         res.send({notes: await find_notes(req, req.session['userId'])});
+    } catch (err) {
+        console.error(err);
+        res.send(err);
+    }
+});
+
+router.get('/searchnotes', async (req, res) => {
+    try {
+        let note_docs = await find_notes(req, req.session['userId'], req.query['searchstr']);
+        res.json({notes: note_docs});
     } catch (err) {
         console.error(err);
         res.send(err);
