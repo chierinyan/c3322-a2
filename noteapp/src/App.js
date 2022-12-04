@@ -103,6 +103,20 @@ class App extends React.Component {
         });
     }
 
+    delete_current_note = () => {
+        if (window.confirm('Confirm to delete this note?')) {
+            $.ajax({
+                url: EXPRESS_URL + 'deletenote/' + this.state.selected,
+                type: 'DELETE',
+                success: (res) => {
+                    this.select('idle', true);
+                    this.set_notes(res['notes']);
+                },
+                error: (res) => { console.error(res); }
+            });
+        }
+    }
+
     select = (noteid, force=false) => {
         if (this.state.editing && !(force || window.confirm('Are you sure to quit editing the note?'))) {
             return false;
@@ -133,7 +147,8 @@ class App extends React.Component {
                         <div/>
                         <div>
                             <Menu time={time} editing={editing}
-                             newNote={this.new_note} saveNote={this.save_note} cancel={() => this.select(this.state.selected)}/>
+                             newNote={this.new_note} saveNote={this.save_note} cancel={() => this.select(this.state.selected)}
+                             deleteNote={this.delete_current_note}/>
                             <Main ref={this.main} editing={editing} startEditing={() => {this.setState({editing: true})}}/>
                         </div>
                     </div>

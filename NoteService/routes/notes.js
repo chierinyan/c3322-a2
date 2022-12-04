@@ -100,6 +100,16 @@ router.get('/searchnotes', async (req, res) => {
     }
 });
 
+router.delete('/deletenote/:noteid', async (req, res) => {
+    try {
+        await req.note_list.remove({_id: monk.id(req.params['noteid'])});
+        res.send({notes: await find_notes(req, req.session['userId'])});
+    } catch (err) {
+        console.error(err);
+        res.send(err);
+    }
+})
+
 function update_time(note) {
     const now = new Date();
     note['lastsavedtime'] = now.toTimeString().split(' ')[0] + ' ' + now.toDateString();

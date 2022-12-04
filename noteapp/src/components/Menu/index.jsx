@@ -3,7 +3,7 @@ import React from 'react';
 import './index.css';
 
 function Menu(props) {
-    const {time, editing, newNote, saveNote, cancel} = props;
+    const {time, editing, newNote, saveNote, cancel, deleteNote} = props;
     if (editing) {
         return (
             <div id='edit_menu' className='menu'>
@@ -17,7 +17,7 @@ function Menu(props) {
             note_opt = (
                 <React.Fragment>
                     <span>{time}</span>
-                    <button>Delete</button>
+                    <button onClick={deleteNote}>Delete</button>
                 </React.Fragment>
             );
         }
