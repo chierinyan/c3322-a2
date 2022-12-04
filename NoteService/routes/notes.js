@@ -68,6 +68,18 @@ router.post('/addnote', async (req, res) => {
     }
 });
 
+router.put('/savenote/:noteid', async (req, res) => {
+    try {
+        const {note} = req.body;
+        update_time(note);
+        await req.note_list.update({_id: monk.id(req.params['noteid'])}, {$set: note});
+        res.send({notes: await find_notes(req, req.session['userId'])});
+    } catch (err) {
+        console.error(err);
+        res.send(err);
+    }
+});
+
 function update_time(note) {
     const now = new Date();
     note['lastsavedtime'] = now.toTimeString().split(' ')[0] + ' ' + now.toDateString();

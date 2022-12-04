@@ -81,13 +81,25 @@ class App extends React.Component {
         if (noteid === 'new') {
             $.post(EXPRESS_URL + 'addnote', {note: {title: title, content: content}}, (res) => {
                 this.set_notes([res, ...this.state['notes']]);
+                this.select(res['_id'], true);
+            });
+        } else {
+            $.ajax({
+                url: EXPRESS_URL + 'savenote/' + this.state.selected,
+                type: 'PUT',
+                data: {note: {title: title, content: content}},
+                success: (res) => {
+                    this.set_notes(res['notes']);
+                    this.select(this.state.selected, true);
+                },
+                error: (res) => { console.error(res); }
             });
         }
     }
 
-    select = (noteid) => {
-        if (this.state.editing && !window.confirm('Are you sure to quit editing the note?')) {
-            return;
+    select = (noteid, force=false) => {
+        if (this.state.editing && !(force || window.confirm('Are you sure to quit editing the note?'))) {
+            return false;
         }
         this.setState({editing: false});
         if (noteid === 'idle' || noteid === 'new') {
@@ -116,7 +128,7 @@ class App extends React.Component {
                         <div>
                             <Menu time={time} editing={editing}
                              newNote={this.new_note} saveNote={this.save_note} cancel={() => this.select(this.state.selected)}/>
-                            <Main ref={this.main} editing={editing}/>
+                            <Main ref={this.main} editing={editing} startEditing={() => {this.setState({editing: true})}}/>
                         </div>
                     </div>
                 </React.Fragment>
